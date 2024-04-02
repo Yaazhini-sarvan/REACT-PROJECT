@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import '../styles/Registration.css'; // Importing the CSS file
+import axios from 'axios';
+import '../styles/Registration.css'; 
 
 const Registration = () => {
   const [username, setUsername] = useState('');
@@ -7,10 +8,20 @@ const Registration = () => {
   const [email, setEmail] = useState('');
   const [registered, setRegistered] = useState(false);
 
-  const handleRegister = () => {
-
-    setRegistered(true);
-    alert('Registered successfully!');
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/users', {
+        username,
+        password,
+        email
+      });
+      console.log(response.data); // Handle response data as needed
+      setRegistered(true);
+      alert('Registered successfully!');
+    } catch (error) {
+      console.error('Registration failed:', error);
+      // You can handle the error here, e.g., show an error message to the user
+    }
   };
 
   return (
