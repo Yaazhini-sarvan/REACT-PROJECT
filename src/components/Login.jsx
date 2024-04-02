@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
-import {  TextField, Button } from '@mui/material';
+import { TextField, Button } from '@mui/material';
+import axios from 'axios';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+  const navigate=useNavigate();
 
-  const handleLogin = () => {
-    if (username === 'admin' && password === 'admin') {
+  const handleLogin = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/users/${username}/${password}`);
+      console.log(response.data); // Handle response data as needed
       setLoggedIn(true);
       alert('Logged in successfully!');
-    } else {
+      navigate('/');
+    } catch (error) {
+      console.error('Login failed:', error);
       alert('Invalid username or password');
     }
   };
